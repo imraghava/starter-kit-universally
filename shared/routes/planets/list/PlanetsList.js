@@ -7,7 +7,7 @@ import Segment from 'components/segment';
 import Button from 'components/button';
 import { autobind } from 'core-decorators';
 
-@inject(['planets'])
+@inject('planets', 'network')
 @observer
 export default class Planets extends Component {
 
@@ -37,7 +37,7 @@ export default class Planets extends Component {
   fetchData(props) {
     const page = Number(props.match.params.page || 1);
     this.page = page;
-    this.planets = this.props.planets.fetchAll({ page });
+    this.props.planets.fetchAll({ page });
   }
 
   /**
@@ -58,6 +58,11 @@ export default class Planets extends Component {
     // this.context.history.push()
     const { match, history } = this.props;
     history.push(match.path.replace(':page', page));
+  }
+
+  @autobind
+  onNextPage() {
+    this.props.planets.fetchAll({ page: this.page + 1 });
   }
 
   /**
@@ -94,7 +99,20 @@ export default class Planets extends Component {
         <Helmet title="Planets" />
 
         <Segment>
-          {this.planets && this.planets.case({
+          <div>isLoading? {this.props.network.isLoading ? 'YES' : 'NO'}</div>
+          <div>isLoading? {this.props.planets.all.length === 0 ? 'YES' : 'NO'}</div>
+          {this.props.planets.all.map(planet => (
+            <div>
+              <Link to={`/planets/detail/${planet.id}`}>{planet.name}</Link>
+            </div>
+          ))}
+          <nav>
+            <Button onClick={this.onNextPage}>
+              Next
+            </Button>
+          </nav>
+
+          {/* {this.planets && this.planets.case({
             pending: () => (<div>Loading planets...</div>),
             rejected: error => (<div>Could not fetch planets: {error.message}</div>),
             fulfilled: ({ results, count, previous, next }) => (
@@ -119,7 +137,7 @@ export default class Planets extends Component {
                 </nav>
               </div>
             ),
-          })}
+          })} */}
         </Segment>
       </div>
     );

@@ -21,6 +21,9 @@ export default class Network {
   @observable
   history = new ObservableMap();
 
+  @observable
+  isLoading = false;
+
   /**
    * Extended fetch method with credentials needed
    * to make http requests to the API.
@@ -29,8 +32,9 @@ export default class Network {
    * @return {Promise}
    */
   @autobind
-  @serverWait
   fetch(url, { maxAge = Infinity, force = false } = {}) {
+
+    this.isLoading = true;
 
     const { history } = this;
 
@@ -51,6 +55,7 @@ export default class Network {
     if (item.data) {
       const now = new Date().getTime();
       if ((now / 1000) - (item.ts / 1000) <= maxAge) {
+        this.isLoading = false;
         return Promise.resolve(item.data);
       }
     }
@@ -62,6 +67,7 @@ export default class Network {
         if (res.status === 404) {
           throw new Error('404 Not found');
         }
+        this.isLoading = false;
         return res.json();
       })
       .then(((data) => {

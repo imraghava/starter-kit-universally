@@ -29,8 +29,8 @@ export default class PlanetsDetail extends Component {
 
   fetchData(props) {
     const { planets, match } = props;
-    this.planets = planets.fetchAll();
-    this.planet = planets.fetchById(match.params.id);
+    // this.planets = planets.fetchAll();
+    planets.fetchById(match.params.id);
   }
 
   /**
@@ -73,11 +73,17 @@ export default class PlanetsDetail extends Component {
    * @return {React.Component}
    */
   render() {
+    const planet = this.props.planets.getById(this.props.match.params.id);
+
     return (
       <div>
         <Helmet title="Planet loading..." />
         <Segment>
-          {this.planet && this.planet.case({
+          <div>GOOD</div>
+          {planet && (
+            <div>{planet.name}</div>
+          )}
+          {/* {this.planet && this.planet.case({
             pending: () => (<div>Loading planet...</div>),
             rejected: error => (<div>Error fetching planet: {error.message}</div>),
             fulfilled: ({ name, gravity, terrain, climate, population, diameter }) => (
@@ -100,7 +106,7 @@ export default class PlanetsDetail extends Component {
                 })}
               </div>
             ),
-          })}
+          })} */}
         </Segment>
       </div>
     );
