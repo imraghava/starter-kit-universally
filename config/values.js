@@ -231,6 +231,9 @@ const values = {
     ],
     // Offline page file name.
     offlinePageFileName: 'offline.html',
+    // Assets that we do not want added to the cache, by default don't add
+    // dotfiles or source maps
+    excludeAssets: ['**/.*', '**/*.map'],
   },
 
   bundles: {
