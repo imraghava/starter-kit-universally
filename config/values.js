@@ -24,6 +24,8 @@ const values = {
     polyfillIO: true,
     // We need to expose all the htmlPage settings.
     helmet: true,
+    // Show dev grid
+    showGridOverlay: true,
   },
 
   // The public facing url of the app
@@ -54,6 +56,13 @@ const values = {
 
   // Disable server side rendering?
   disableSSR: false,
+
+  // Show grid devtool? Possible values:
+  // "true"" – show both horizontal and vertical grids
+  // "horizontal" – show only horizontal grid
+  // "vertical" – show only vertical grid
+  // other values or empty shows no grid
+  showGridOverlay: EnvVars.string('SHOW_GRID_OVERLAY', ''),
 
   // Maximum time in milliseconds to produce server side rendered markup
   maxServerWait: 1200,

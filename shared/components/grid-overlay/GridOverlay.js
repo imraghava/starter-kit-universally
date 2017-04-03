@@ -17,6 +17,8 @@ export default class GridOverlay extends Component {
 
   static propTypes = {
     columns: PropTypes.number,
+    horizontalDisabled: PropTypes.bool,
+    verticalDisabled: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -29,12 +31,6 @@ export default class GridOverlay extends Component {
 
   @observable
   isVerticalVisible = false;
-
-  // Initial state
-  state = {
-    horizontalIsVisible: false,
-    verticalIsVisible: false,
-  };
 
   /**
    * Fired when component is mounted on the client
@@ -96,9 +92,11 @@ export default class GridOverlay extends Component {
    * @return {Component}
    */
   render() {
-    const { columns } = this.props;
+    const { columns, horizontalDisabled, verticalDisabled } = this.props;
     const verticalIsVisible = this.isVerticalVisible;
     const horizontalIsVisible = this.isHorizontalVisible;
+
+    console.log('Disabled', horizontalDisabled, verticalDisabled)
 
     return (
       <div
@@ -115,7 +113,13 @@ export default class GridOverlay extends Component {
           </div>
         </div>
 
-        <button className={s('grid__button', { verticalIsVisible })} onClick={this.onToggleVertical}>
+        <button
+          className={s('grid__button', {
+            verticalIsVisible,
+            verticalDisabled
+          })}
+          onClick={this.onToggleVertical}
+        >
           <svg className={s.grid__button__svg} width="14px" height="14px" viewBox="0 0 14 14">
             <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
               <rect x="0" y="0" width="2" height="14" />
@@ -126,7 +130,13 @@ export default class GridOverlay extends Component {
           </svg>
         </button>
 
-        <button className={s('grid__button', { horizontalIsVisible })} onClick={this.onToggleHorizontal}>
+        <button
+          className={s('grid__button', {
+            horizontalIsVisible,
+            horizontalDisabled,
+          })}
+          onClick={this.onToggleHorizontal}
+        >
           <svg className={s.grid__button__svg} width="14px" height="14px" viewBox="0 0 14 14">
             <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(7.000000, 7.000000) rotate(-270.000000) translate(-7.000000, -7.000000)">
               <rect x="0" y="0" width="2" height="14" />
