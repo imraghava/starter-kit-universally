@@ -8,6 +8,8 @@
 import * as EnvVars from './utils/envVars';
 
 const values = {
+  contentfulSpace: EnvVars.string('CONTENTFUL_SPACE'),
+  contentfulAccessToken: EnvVars.string('CONTENTFUL_ACCESS_TOKEN'),
   // The configuration values that should be exposed to our client bundle.
   // This value gets passed through the /shared/utils/objects/filterWithRules
   // util to create a filter object that can be serialised and included

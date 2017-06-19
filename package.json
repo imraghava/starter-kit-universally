@@ -90,6 +90,7 @@
     "colors": "1.1.2",
     "compression": "1.6.2",
     "core-decorators": "0.18.0",
+    "cors": "^2.8.3",
     "cross-env": "4.0.0",
     "css-loader": "0.28.1",
     "dotenv": "4.0.0",

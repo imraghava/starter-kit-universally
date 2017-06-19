@@ -4,6 +4,7 @@ import express from 'express';
 import compression from 'compression';
 import { resolve as pathResolve } from 'path';
 import appRootDir from 'app-root-dir';
+import cors from 'cors';
 import reactApplication from './middleware/reactApplication';
 import security from './middleware/security';
 import clientBundle from './middleware/clientBundle';
@@ -11,6 +12,7 @@ import serviceWorker from './middleware/serviceWorker';
 import offlinePage from './middleware/offlinePage';
 import errorHandlers from './middleware/errorHandlers';
 import enforceHttps from './middleware/enforceHttps';
+import api from './api';
 import config from '../config';
 
 // Create our express based server.
@@ -51,6 +53,20 @@ app.use(config('bundles.client.webPath'), clientBundle);
 // Configure static serving of our "public" root http path static files.
 // Note: these will be served off the root (i.e. '/') of our application.
 app.use(express.static(pathResolve(appRootDir.get(), config('publicAssetsPath'))));
+
+// Corsoptions for api
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || config('api.corsWhitelist').indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+// API
+app.use('/api', cors(corsOptions), api);
 
 // The React application middleware.
 app.get('*', reactApplication);
