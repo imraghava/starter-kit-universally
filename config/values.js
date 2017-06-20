@@ -7,9 +7,20 @@
 
 import * as EnvVars from './utils/envVars';
 
+function apiUrl() {
+  const herokuAppName = EnvVars.string('HEROKU_APP_NAME');
+  // If running on Heroku and app name is available, use that
+  if (herokuAppName) {
+    return `https://${herokuAppName}.herokuapp.com/api`;
+  }
+
+  return EnvVars.string('API_URL', `http://localhost:${EnvVars.number('PORT', 3000)}/api`);
+}
+
 const values = {
   contentfulSpace: EnvVars.string('CONTENTFUL_SPACE'),
   contentfulAccessToken: EnvVars.string('CONTENTFUL_ACCESS_TOKEN'),
+  apiUrl: apiUrl(),
   // The configuration values that should be exposed to our client bundle.
   // This value gets passed through the /shared/utils/objects/filterWithRules
   // util to create a filter object that can be serialised and included
