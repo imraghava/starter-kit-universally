@@ -26,6 +26,7 @@ const values = {
   // util to create a filter object that can be serialised and included
   // with our client bundle.
   clientConfigFilter: {
+    apiUrl: true,
     // This is here as an example showing that you can expose variables
     // that were potentially provivded by the environment
     welcomeMessage: true,

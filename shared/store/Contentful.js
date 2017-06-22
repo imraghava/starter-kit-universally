@@ -25,12 +25,18 @@ export default class Contentful {
   }
 
   @timing.promise
-  fetchById(id, query) {
-    const q = queryToString(query);
-    const url = `${apiUrl}/contentful/entries/&{id}?${q}`;
+  fetchBySlug(slug, contentType, query) {
+    return this.fetchByContentType(contentType, { ...query, 'fields.slug': slug })
+      .then((parsed) => {
+        if (Array.isArray(parsed)) {
+          if (parsed.length > 0) {
+            return parsed[0];
+          }
+          return {};
+        }
 
-    return this.fetch(url, { force: true })
-      .then(data => parse(data))
+        return parsed;
+      })
       .catch((err) => {
         console.warn('Error fetching contentful data', err);
         return {};

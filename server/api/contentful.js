@@ -40,12 +40,4 @@ app.get('/entries', (req, res) => {
     .catch(errorHandler(res));
 });
 
-app.get('/entries/:id', (req, res) => {
-  fetch({ query: req.query, endpoint: req.path })
-    .then((response) => {
-      res.send(response);
-    })
-    .catch(errorHandler(res));
-});
-
 export default app;
